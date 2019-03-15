@@ -1,7 +1,7 @@
 # build_subpfam
 A collection of python scripts used to build subpfam HMMs.
 
-![image](image.png)
+![subpfam](subpfam.png)
 
 **Order of scripts to be executed:**
 1. fetch_fastas.py
