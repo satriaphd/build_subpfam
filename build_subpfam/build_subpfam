@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+"""
+Build per-clade pHMM models from a collection of
+aligned protein sequences (in a multifasta format).
+
+Clades are programmatically defined by cutting a
+mid-rooted, laderized, and ultrametricized phylogenetic
+tree of the aligned sequences by a specified length
+point.
+
+
+author: Satria A Kautsar (satriaphd@gmail.com)
+version: 0.1
+"""
+
+# License: GNU Affero General Public License v3 or later
+# A copy of GNU AGPL v3 should have been included in this software package in LICENSE
+
+from os import getcwd, path
+import argparse
+from scripts.build_trees import build_tree
+from scripts.extract_clades import extract_clades
+from scripts.build_clade_hmms import build_hmm
+
+
+def main():
+
+	# check requirements
+	## todo: check if fasttree or fasttreeMP is installed
+	## if fasttreeMP not installed and threads > 1, give warning
+
+	# program parameters
+	parser = argparse.ArgumentParser(description="""
+		Build per-clade pHMM models from a collection of
+		aligned protein sequences (in a multifasta format).
+		Clades are programmatically defined by cutting a
+		mid-rooted, laderized, and ultrametricized phylogenetic
+		tree of the aligned sequences by a specified length
+		point.
+		""")
+	parser.add_argument("fasta_path", type=str, help="""
+		Path to multiple protein sequences alignment fasta file (.fa/.fasta)
+		""")
+	parser.add_argument("-o", "--out", type=str, dest="output_folder",
+						default=getcwd(), help="""
+		default: save to current working directory (make sure that the folder
+		is clean!)
+		""")
+	args = parser.parse_args()
+
+	# run pipeline
+	print("Building phylogenetic tree with FastTree... (-fastest -noml)")
+	tree_path = build_tree(args.fasta_path, args.output_folder, 1)
+	print("Extracting subpfam clades...")
+	all_clades = extract_clades(tree_path)
+	print("Building clade HMMs...")
+	output_hmm_path = "{}.subpfams.hmm".format(path.join(args.output_folder, path.splitext(path.basename(args.fasta_path))[0]))
+	build_hmm(args.fasta_path, all_clades, output_hmm_path)
+	print("Done.")
+
+
+if __name__ == "__main__":
+    main()
