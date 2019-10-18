@@ -1,11 +1,13 @@
 # build_subpfam
-A collection of python scripts used to build subpfam HMMs.
+Build per-clade pHMM models from a collection of
+aligned protein sequences (in a multifasta format).
+
+Clades are programmatically defined by cutting a
+mid-rooted, laderized, and ultrametricized phylogenetic
+tree of the aligned sequences by a specified length
+point.
 
 ![subpfam](subpfam.png)
 
-**Order of scripts to be executed:**
-1. fetch_fastas.py
-2. trim_fastas.py
-3. build_trees.py
-4. extract_clades.py
-5. build_clade_hmms.py
+**Usage**
+under construction
