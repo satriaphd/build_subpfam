@@ -5,7 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="build_subpfam",
-    version="0.1",
+    version="0.1.1",
+    scripts=['build_subpfam'],
     author="Satria A Kautsar",
     author_email="satriaphd@gmail.com",
     description="Build clade HMMs from a multiple sequence alignment file",
@@ -18,6 +19,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        "ete3"
+        "ete3",
+        "six"
     ]
 )
